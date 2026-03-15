@@ -1,0 +1,205 @@
+.profile-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .back-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background 0.3s;
+    &:hover { background: #5a6268; }
+  }
+
+  .status-message {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 18px;
+    &.empty { color: #dc3545; }
+  }
+
+  .profile-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 20px;
+
+      @media (max-width: 500px) {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #eee;
+        background: #f8f9fa;
+      }
+
+      .name-section {
+        h1 { 
+          margin: 0 0 10px 0; 
+          color: #333; 
+          font-size: 28px; 
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          
+          .jersey-number { 
+            background: #007bff;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 20px;
+          }
+        }
+        
+        .football-info { margin: 5px 0; color: #555; font-size: 16px; }
+        .citizenship { margin: 5px 0; color: #666; font-size: 16px; }
+      }
+    }
+
+    .divider {
+      border: 0;
+      height: 1px;
+      background: #eee;
+      margin: 20px 0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .empty-text {
+      color: #999;
+      font-size: 14px;
+      font-style: italic;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    /* 🌟 กล่องข้อมูลส่วนตัว */
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+
+      .detail-box {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+
+        .label { display: block; color: #888; font-size: 13px; margin-bottom: 5px; text-transform: uppercase; }
+        .value { display: block; color: #222; font-size: 18px; font-weight: bold; }
+      }
+    }
+
+    /* 🌟 กล่องสถิติ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 15px;
+
+      .stat-card {
+        background: #eef2f5;
+        border-left: 4px solid #007bff;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .stat-name { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;}
+        .stat-value { font-size: 24px; font-weight: bold; color: #222; }
+      }
+    }
+
+    /* 🌟 ลิสต์รางวัล */
+    .awards-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+
+      li {
+        background: #fffdf5;
+        border: 1px solid #ffeeba;
+        padding: 12px 15px;
+        border-radius: 8px;
+        color: #856404;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &::before { content: '🏅'; margin-right: 10px; }
+        .award-year { font-size: 13px; color: #bca054; }
+      }
+    }
+  }
+}
+// 🌟 ตกแต่งประวัติการค้าแข้ง (Career List)
+.career-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  li {
+    background: #f1f5f9;
+    padding: 10px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    .club-name { 
+      font-weight: bold; 
+      color: #1e293b; 
+    }
+    
+    .club-season { 
+      font-size: 13px; 
+      color: #64748b; 
+      background: #ffffff; 
+      padding: 3px 8px; 
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+  }
+}

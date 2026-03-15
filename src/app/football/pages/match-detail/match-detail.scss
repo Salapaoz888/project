@@ -1,0 +1,391 @@
+// 🌟 ตัวแปรสีหลัก
+$bg-dark-start: #1a1a1a;
+$bg-dark-end: #333333;
+$text-light: #ffffff;
+$text-muted: #aaaaaa;
+$bg-white: #ffffff;
+$border-light: #eeeeee;
+
+// สีประจำทีม (เหย้า/เยือน) สำหรับสถิติ
+$primary-color: #00529f;
+$danger-color: #d9534f;
+$bg-primary-light: #f4f8ff;
+$bg-danger-light: #fff4f4;
+
+.match-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: sans-serif;
+
+  .back-btn {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background: #e9ecef;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease;
+
+    &:hover { background: #d3d9df; }
+  }
+
+  .loading-state {
+    text-align: center;
+    padding: 50px;
+  }
+
+  // 🌟 1. สกอร์บอร์ด
+  .scoreboard {
+    background: linear-gradient(135deg, $bg-dark-start 0%, $bg-dark-end 100%);
+    color: $text-light;
+    border-radius: 15px;
+    padding: 40px 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    text-align: center;
+
+    .match-status {
+      color: $text-muted;
+      margin-top: 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .score-display {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 20px;
+
+      .team-info {
+        flex: 1;
+
+        .logo-wrapper {
+          background: $bg-white;
+          padding: 10px;
+          border-radius: 50%;
+          display: inline-block;
+          box-shadow: 0 0 15px rgba(255,255,255,0.1);
+
+          img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+          }
+        }
+
+        h3 {
+          margin-top: 15px;
+          font-size: 20px;
+        }
+      }
+
+      .score-text {
+        flex: 1;
+
+        h1 {
+          font-size: 64px;
+          margin: 0;
+          font-weight: 800;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+
+          .divider {
+            color: #666;
+            font-size: 40px;
+          }
+        }
+      }
+    }
+  }
+
+  // 🌟 2. โครงสร้าง Grid ด้านล่าง (ไทม์ไลน์ & สถิติ)
+  .details-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+
+    .detail-card {
+      flex: 1;
+      min-width: 350px;
+      background: $bg-white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+      .card-title {
+        margin-top: 0;
+        border-bottom: 2px solid $border-light;
+        padding-bottom: 15px;
+        color: #333;
+        text-align: center;
+      }
+
+      // 🌟 ไทม์ไลน์เหตุการณ์
+      .timeline-list {
+        display: flex;
+        flex-direction: column;
+        margin-top: 15px;
+
+        .timeline-event {
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid #f9f9f9;
+          padding: 12px 0;
+          transition: background 0.2s;
+
+          &:hover { background: #fafafa; }
+
+          .event-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+
+            .player-name {
+              font-weight: 500;
+              font-size: 15px;
+              color: #333;
+            }
+
+            .event-suffix {
+              color: $danger-color;
+              font-size: 13px;
+              margin: 0 5px;
+              font-weight: bold;
+            }
+
+            .event-icon {
+              font-size: 16px;
+              margin: 0 8px;
+            }
+
+            // จัดเรียงฝั่งเหย้า-เยือน
+            &.home {
+              justify-content: flex-end;
+              text-align: right;
+              padding-right: 15px;
+            }
+
+            &.away {
+              justify-content: flex-start;
+              text-align: left;
+              padding-left: 15px;
+            }
+          }
+
+          .event-clock {
+            width: 45px;
+            text-align: center;
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 5px 0;
+            font-weight: bold;
+            font-size: 13px;
+            color: #555;
+            border: 1px solid #e1e4e8;
+          }
+        }
+      }
+
+      .empty-message {
+        text-align: center;
+        color: gray;
+        margin-top: 30px;
+      }
+
+      // 🌟 สถิติหลังเกม
+      .stats-list {
+        margin-top: 20px;
+
+        .stat-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 0;
+          border-bottom: 1px dashed #f0f0f0;
+
+          .stat-label {
+            width: 50%;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+
+          // กล่องตัวเลขสถิติ
+          .stat-box {
+            width: 25%;
+            text-align: center;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+            
+            &.home-stat {
+              background: $bg-primary-light;
+              color: $primary-color;
+              // ถ้าชนะสถิตินี้
+              &.winner { background: $primary-color; color: white; }
+              // ถ้าแพ้สถิตินี้
+              &.loser { opacity: 0.4; }
+            }
+
+            &.away-stat {
+              background: $bg-danger-light;
+              color: $danger-color;
+              &.winner { background: $danger-color; color: white; }
+              &.loser { opacity: 0.4; }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// (ส่วนพื้นฐานทั่วไปที่เคยมี)
+.match-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.back-btn {
+  background: none; border: none; font-size: 16px; cursor: pointer;
+  color: #007bff; margin-bottom: 20px; font-weight: bold;
+}
+.loading-state { text-align: center; padding: 50px; color: #666; }
+
+// ==========================
+// สกอร์บอร์ด
+// ==========================
+.scoreboard {
+  background: linear-gradient(135deg, #111, #2a2a2a);
+  border-radius: 12px; padding: 30px; color: white;
+  text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  .match-status { font-size: 14px; color: #ffc107; margin-bottom: 20px; font-weight: bold; letter-spacing: 1px; }
+
+  .score-display {
+    display: flex; justify-content: center; align-items: center; gap: 40px;
+
+    .team-info {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px;
+      h3 { font-size: 18px; margin: 0; font-weight: 500; }
+      .logo-wrapper {
+        background: white; border-radius: 50%; padding: 10px; width: 80px; height: 80px;
+        display: flex; justify-content: center; align-items: center;
+        img { width: 100%; height: 100%; object-fit: contain; }
+      }
+    }
+
+    .score-text h1 { font-size: 48px; margin: 0; font-weight: bold; display: flex; gap: 15px; }
+  }
+}
+
+// ==========================
+// สนามฟุตบอล Lineups (LiveScore Style)
+// ==========================
+.lineups-section {
+  margin: 30px 0;
+  .section-title {
+    text-align: center; margin-bottom: 20px; color: #333; font-size: 20px; font-weight: bold;
+  }
+}
+
+.livescore-pitch-container {
+  max-width: 550px; // บีบความกว้างให้ดูสมส่วนเหมือนมือถือ/LiveScore
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background: #32a14e; // สีเขียวสว่างแบบในรูป
+}
+
+// แถบชื่อทีมบน-ล่าง
+.team-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #1e7035; // สีเขียวเข้ม
+  color: white; padding: 12px 15px; font-weight: bold;
+  
+  .team-info-left {
+    display: flex; align-items: center; gap: 12px; font-size: 16px;
+    img { width: 28px; height: 28px; object-fit: contain; }
+  }
+  .formation { font-size: 16px; letter-spacing: 1px; }
+}
+
+// ตัวสนามหญ้า
+.full-pitch {
+  position: relative; display: flex; flex-direction: column;
+  padding: 20px 0; min-height: 750px; // ความสูงสนาม
+  
+  // ลายหญ้าสลับสี
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 45px,
+    transparent 45px,
+    transparent 90px
+  );
+
+  // เส้นขอบสนามต่างๆ
+  .pitch-markings {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 0;
+
+    .halfway-line {
+      position: absolute; top: 50%; left: 0; width: 100%; height: 2px;
+      background: rgba(255,255,255,0.4); transform: translateY(-50%);
+    }
+
+    .center-circle {
+      position: absolute; top: 50%; left: 50%; width: 130px; height: 130px;
+      border: 2px solid rgba(255,255,255,0.4); border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .penalty-box {
+      position: absolute; left: 50%; width: 220px; height: 110px;
+      border: 2px solid rgba(255,255,255,0.4); transform: translateX(-50%);
+      
+      &.top { top: 0; border-top: none; }
+      &.bottom { bottom: 0; border-bottom: none; }
+    }
+  }
+
+  // พื้นที่ของแต่ละทีม
+  .team-half {
+    flex: 1; display: flex; flex-direction: column; justify-content: space-around; z-index: 1;
+    padding: 10px 0;
+  }
+
+  .pitch-row {
+    display: flex; justify-content: space-around; align-items: center; width: 100%;
+  }
+
+  // วงกลมนักเตะ
+  .player-node {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; width: 25%;
+    
+    .jersey-circle {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 15px; color: white;
+      border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    // สีเสื้อทีมเหย้า (น้ำเงิน) และ เยือน (แดง) แบบในตัวอย่าง
+    &.home .jersey-circle { background: #0d6efd; }
+    &.away .jersey-circle { background: #dc3545; }
+
+    .player-name {
+      color: white; font-size: 13px; text-align: center; white-space: nowrap;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-weight: 500;
+    }
+  }
+}
+.away-half .pitch-row {
+  flex-direction: row-reverse;
+}

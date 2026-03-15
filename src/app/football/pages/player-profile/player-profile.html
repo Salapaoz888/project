@@ -1,0 +1,103 @@
+<div class="profile-container">
+  <button class="back-btn" (click)="goBack()">⬅ กลับไปหน้าค้นหา</button>
+
+  @if (isLoading()) {
+    <div class="status-message">⏳ กำลังโหลดข้อมูลนักเตะ...</div>
+  } @else if (playerData()) {
+    <div class="profile-card">
+      <div class="profile-header">
+        <img
+          [src]="playerData().imageUrl"
+          (error)="onImageError($event)"
+          alt="player image"
+          class="profile-img"
+        />
+        <div class="name-section">
+          <h1>
+            {{ playerData().fullName || playerData().displayName }}
+            @if (playerData().jersey) {
+              <span class="jersey-number">#{{ playerData().jersey }}</span>
+            }
+          </h1>
+          <p class="football-info">
+            ⚽ สโมสร: <strong>{{ playerData().teamName }}</strong>
+          </p>
+          <p class="football-info">
+            📍 ตำแหน่ง: <strong>{{ playerData().positionName }}</strong>
+          </p>
+          <p class="citizenship">🌍 สัญชาติ: {{ playerData().citizenship || 'ไม่ระบุ' }}</p>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <h3 class="section-title">👤 ข้อมูลส่วนตัว</h3>
+      <div class="profile-details">
+        <div class="detail-box">
+          <span class="label">อายุ</span>
+          <span class="value">{{ playerData().age ? playerData().age + ' ปี' : '-' }}</span>
+        </div>
+        <div class="detail-box">
+          <span class="label">ส่วนสูง</span>
+          <span class="value">{{ playerData().displayHeight || '-' }}</span>
+        </div>
+        <div class="detail-box">
+          <span class="label">น้ำหนัก</span>
+          <span class="value">{{ playerData().displayWeight || '-' }}</span>
+        </div>
+       
+      </div>
+
+      @if (playerCareer().length > 0) {
+        <hr class="divider" />
+        <h3 class="section-title">⚽ ประวัติการค้าแข้ง</h3>
+        <ul class="career-list">
+          @for (club of playerCareer(); track $index) {
+            <li>
+              <span class="club-name">{{ club.name }}</span>
+              @if (club.season) {
+                <span class="club-season">{{ club.season }}</span>
+              }
+            </li>
+          }
+        </ul>
+      }
+
+      @if (playerStats().length > 0) {
+        <hr class="divider" />
+        <h3 class="section-title">
+          📊 สถิติฤดูกาลล่าสุด ({{ playerData().statsSummary?.displayName || 'รวม' }})
+        </h3>
+        <div class="stats-grid">
+          @for (stat of playerStats(); track stat.name || $index) {
+            <div class="stat-card">
+              <span class="stat-name">{{ stat.displayName || stat.name }}</span>
+              <span class="stat-value">{{ stat.displayValue || stat.value || '0' }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (playerAwards().length > 0) {
+        <hr class="divider" />
+        <h3 class="section-title">🏆 รางวัล & เกียรติประวัติ</h3>
+        <ul class="awards-list">
+          @for (award of playerAwards(); track award.id || $index) {
+            <li>
+              <strong>{{ award.displayName || award.name }}</strong>
+              <span class="award-year">{{ award.year ? '(' + award.year + ')' : '' }}</span>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (playerBio()) {
+        <hr class="divider" />
+        <h3 class="section-title">📝 ประวัติเพิ่มเติม</h3>
+        <p class="bio-text">{{ playerBio() }}</p>
+      }
+    </div>
+  } @else {
+    <div class="status-message empty">❌ ไม่พบข้อมูลนักเตะคนนี้</div>
+  }
+</div>

@@ -1,0 +1,113 @@
+// 🌟 ตัวแปรสีหลัก
+$primary: #00529f;
+$text-dark: #333;
+$text-gray: gray;
+$bg-white: #fff;
+$border-light: #eee;
+$border-dark: #ddd;
+
+.teams-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: sans-serif;
+
+  .page-title {
+    text-align: center;
+    color: $text-dark;
+    margin-bottom: 20px;
+  }
+
+  // 🌟 แถบเลือกลีค
+  .league-selector {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+    scrollbar-width: none; // ซ่อน Scrollbar
+    &::-webkit-scrollbar { display: none; }
+
+    .league-btn {
+      padding: 10px 22px;
+      border: 1px solid $border-dark;
+      border-radius: 25px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: bold;
+      background: $bg-white;
+      color: #555;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+      &:hover {
+        background: #f0f4f8;
+      }
+
+      &.active {
+        background: $primary;
+        color: $bg-white;
+        border-color: $primary;
+      }
+    }
+  }
+
+  // 🌟 สถานะโหลด & ว่างเปล่า
+  .state-message {
+    text-align: center;
+    padding: 50px;
+    
+    h2 { color: #666; }
+
+    &.empty {
+      grid-column: 1 / -1;
+      color: $text-gray;
+      border: 2px dashed $border-dark;
+      border-radius: 15px;
+    }
+  }
+
+  // 🌟 Grid แสดงผลการ์ดทีม
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+
+    .team-card {
+      background: $bg-white;
+      border: 1px solid $border-light;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      // เอฟเฟกต์เวลาเอาเมาส์ชี้
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      }
+
+      .team-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        margin-bottom: 15px;
+      }
+
+      .team-name {
+        margin: 0;
+        color: #222;
+        font-size: 16px;
+      }
+
+      .team-abbr {
+        color: $text-gray;
+        font-size: 13px;
+        margin: 5px 0 0 0;
+      }
+    }
+  }
+}

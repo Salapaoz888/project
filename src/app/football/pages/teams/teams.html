@@ -1,0 +1,30 @@
+<div class="teams-container">
+  
+  <h1 class="page-title">🛡️ ข้อมูลสโมสร (Teams)</h1>
+
+  
+
+  @if (isLoading()) {
+    <div class="state-message">
+      <h2>⏳ กำลังโหลดข้อมูลสโมสร...</h2>
+    </div>
+  } @else {
+    
+    <div class="team-grid">
+      @for (team of teams(); track team.id) {
+        
+        <div class="team-card" [routerLink]="['/team', team.id]">
+          <img class="team-logo" [src]="team.logos?.[0]?.href" alt="logo">
+          <h3 class="team-name">{{ team.name }}</h3>
+          <p class="team-abbr">{{ team.abbreviation }}</p>
+        </div>
+
+      } @empty {
+        <div class="state-message empty">
+          🚫 ไม่พบข้อมูลทีมในลีคนี้
+        </div>
+      }
+    </div>
+
+  }
+</div>

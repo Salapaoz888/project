@@ -1,0 +1,42 @@
+<div class="search-container">
+  
+  <div class="search-header">
+    <h1>🔍 ค้นหาสโมสรฟุตบอล</h1>
+    <p>ค้นหาทีมโปรดของคุณจาก 5 ลีกดังของยุโรป</p>
+    
+    <form (ngSubmit)="$event.preventDefault()">
+      <input type="text" 
+             name="searchTeam"
+             class="search-input"
+             placeholder="พิมพ์ชื่อทีม (เช่น Manchester, Real Madrid, Bayern)..." 
+             [ngModel]="searchQuery()" 
+             (ngModelChange)="searchQuery.set($event)">
+    </form>
+    <div class="search-status">
+      คำค้นหา: <strong>{{ searchQuery() || 'ทั้งหมด' }}</strong>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <h2>⏳ กำลังรวบรวมข้อมูลสโมสรทั่วยุโรป...</h2>
+    </div>
+  } @else {
+    
+    <div class="team-grid">
+      @for (team of filteredTeams(); track team.id) {
+        
+        <div class="team-card" (click)="goToTeam(team)">
+          <img [src]="team.logos && team.logos.length > 0 ? team.logos[0].href : ''" alt="logo">
+          <span class="league-badge">{{ team.leagueName }}</span>
+        </div>
+
+      } @empty {
+        <div class="empty-state">
+          🚫 ไม่พบทีมที่คุณค้นหา ลองใช้คำอื่นดูนะครับ
+        </div>
+      }
+    </div>
+
+  }
+</div>

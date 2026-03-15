@@ -1,0 +1,127 @@
+<div class="team-detail-page">
+  
+  @if (isLoading()) {
+    <div class="loading-state">
+      <h2>⏳ กำลังโหลดข้อมูลสโมสร...</h2>
+    </div>
+  } @else {
+    
+    <div class="team-header" 
+         [style.background]="teamInfo()?.color ? 'linear-gradient(135deg, #' + teamInfo()?.color + ' 0%, #111 100%)' : '#333'">
+      <div class="header-content">
+        
+        <div class="logo-box">
+          <img [src]="teamInfo()?.logos?.[0]?.href" alt="โลโก้ทีม">
+        </div>
+        
+        <div class="info-box">
+          <h1>{{ teamInfo()?.name }}</h1>
+          <div class="meta">
+          
+            <span><strong>🏷️ ฉายา:</strong> {{ teamInfo()?.nickname || teamInfo()?.abbreviation }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content-container">
+      
+      <div class="tabs">
+        <div class="tab">ข้อมูลสโมสร & รายชื่อนักเตะ</div>
+      </div>
+
+      <div class="content-body">
+        
+        <h3 class="section-title">📅 ประวัติการแข่งขัน 5 นัดล่าสุด</h3>
+        
+        <div class="match-list">
+          @for (match of pastMatches(); track match.id) {
+            
+            <div class="match-row">
+              <div class="match-date">{{ match.date | date:'dd MMM yyyy' }}</div>
+              
+              <div class="match-teams">
+                <div class="team-side home">
+                  <span>{{ match.competitions?.[0]?.competitors?.[0]?.team?.name }}</span>
+                  <img [src]="match.competitions?.[0]?.competitors?.[0]?.team?.logos?.[0]?.href">
+                </div>
+                
+                <div class="match-score">
+                  {{ getScore(match.competitions?.[0]?.competitors?.[0]) }} - {{ getScore(match.competitions?.[0]?.competitors?.[1]) }}
+                </div>
+                
+                <div class="team-side away">
+                  <img [src]="match.competitions?.[0]?.competitors?.[1]?.team?.logos?.[0]?.href">
+                  <span>{{ match.competitions?.[0]?.competitors?.[1]?.team?.name }}</span>
+                </div>
+              </div>
+
+              <div class="match-action">
+                <button [routerLink]="['/match', match.id]">ดูสถิติ</button>
+              </div>
+            </div>
+
+          } @empty {
+            <p class="empty-match">ไม่มีข้อมูลการแข่งขันย้อนหลัง</p>
+          }
+        </div>
+
+        <h3 class="section-title" style="margin-top: 30px;">⚽ กองหน้า (Forwards)</h3>
+        <div class="player-grid">
+          @for (player of forwards(); track player.id) {
+            <ng-container *ngTemplateOutlet="playerCard; context: { $implicit: player }"></ng-container>
+          }
+        </div>
+
+        <h3 class="section-title">🎯 กองกลาง (Midfielders)</h3>
+        <div class="player-grid">
+          @for (player of midfielders(); track player.id) {
+            <ng-container *ngTemplateOutlet="playerCard; context: { $implicit: player }"></ng-container>
+          }
+        </div>
+
+        <h3 class="section-title">🛡️ กองหลัง (Defenders)</h3>
+        <div class="player-grid">
+          @for (player of defenders(); track player.id) {
+            <ng-container *ngTemplateOutlet="playerCard; context: { $implicit: player }"></ng-container>
+          }
+        </div>
+
+        <h3 class="section-title">🧤 ผู้รักษาประตู (Goalkeepers)</h3>
+        <div class="player-grid">
+          @for (player of goalkeepers(); track player.id) {
+            <ng-container *ngTemplateOutlet="playerCard; context: { $implicit: player }"></ng-container>
+          }
+        </div>
+
+      </div>
+    </div>
+
+  }
+
+</div>
+
+<ng-template #playerCard let-player>
+  <div class="player-card">
+    <img #img 
+         [src]="player.headshot?.href || 'https://a.espncdn.com/combiner/i?img=/i/headshots/nophoto.png'" 
+         (error)="img.src = 'https://a.espncdn.com/combiner/i?img=/i/headshots/nophoto.png'"
+         alt="player">
+         
+    <div class="player-info">
+      <h4>{{ player.fullName }}</h4>
+      <p>
+        <strong>#{{ player.jersey || '-' }}</strong> • 
+        {{ 
+           player.birthPlace?.country?.name || 
+           player.birthPlace?.country || 
+           player.flag?.alt || 
+           player.citizenship || 
+           player.nationality || 
+           'ไม่ระบุ' 
+        }}
+      </p>
+    </div>
+  </div>
+</ng-template>
