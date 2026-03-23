@@ -214,29 +214,40 @@ $primary-color: #00529f;
 }
 
 // 🌟 สไตล์สำหรับการ์ดนักเตะ (ใช้คู่กับ ng-template)
+/* 🌟 จัดการการ์ดนักเตะ (หาคลาส .player-card ของเดิมแล้วเพิ่มโค้ดนี้เข้าไปครับ) */
 .player-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-light, #e2e8f0);
+  border-radius: 12px;
+  padding: 15px;
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 10px;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  background: transparent;
-  transition: background 0.2s ease;
+  
+  /* 🌟 เพิ่ม 3 บรรทัดนี้เพื่อให้ดูเป็นปุ่มที่กดได้ */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 
-  // hover effect
+  /* 🌟 ลูกเล่นตอนเอาเมาส์ชี้ (Hover) */
   &:hover {
-    background-color: #f9f9f9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(30, 58, 138, 0.1);
+    border-color: #3b82f6; /* เปลี่ยนขอบเป็นสีฟ้า */
+    background: #f8fafc;
   }
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #ddd;
-    background: #eee;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
   }
+
+  /* ... โค้ดตกแต่งชื่อนักเตะเดิม ... */
+
 
   .player-info {
     h4 {

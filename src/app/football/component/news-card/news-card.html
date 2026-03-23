@@ -1,0 +1,9 @@
+<a [href]="getNewsLink()" target="_blank" class="news-card-small">
+    <div class="img-wrapper">
+      <img [src]="getImageUrl()" alt="news image">
+    </div>
+    <div class="news-content">
+      <h4>{{ getHeadline() }}</h4>
+      <small>{{ getPublishedDate() | date:'dd MMM, HH:mm' }} น.</small>
+    </div>
+  </a>

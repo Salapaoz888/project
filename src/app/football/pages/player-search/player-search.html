@@ -1,47 +1,57 @@
 <!-- eslint-disable @angular-eslint/template/no-autofocus -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <div class="search-container">
-    <h2>🔍 ค้นหานักเตะ</h2>
-  
-    <div class="search-box">
-      <input 
-        type="text" 
-        [ngModel]="searchQuery()" 
-        (ngModelChange)="onSearchInput($event)"
-        placeholder="พิมพ์ชื่อนักเตะ เช่น Ronaldo, Messi..."
-        autofocus
-      >
-    </div>
-  
-    @if (searchQuery().trim()) {
-      <p class="search-indicator" style="text-align: center; color: #007bff; font-weight: bold; margin-bottom: 20px;">
-        กำลังค้นหา: {{ searchQuery() }}
-      </p>
-    }
-  
+  <h2>🔍 ค้นหานักเตะ</h2>
+
+  <div class="search-box">
+    <input 
+      type="text" 
+      [ngModel]="searchQuery()" 
+      (ngModelChange)="onSearchInput($event)"
+      placeholder="พิมพ์ชื่อนักเตะ เช่น Ronaldo, Messi..."
+      autofocus
+    >
+  </div>
+
+  @if (searchQuery().trim()) {
+    <p class="search-indicator" style="text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px;">
+      กำลังค้นหา: {{ searchQuery() }}
+    </p>
+
     <div class="results-area">
-      
       @if (isLoading()) {
         <div class="status-message">⏳ กำลังโหลดข้อมูล...</div>
       } 
-      @else if (hasSearched() && searchResults().length === 0 && searchQuery().trim() !== '') {
+      @else if (hasSearched() && searchResults().length === 0) {
         <div class="status-message empty">❌ ไม่พบนักเตะชื่อ "{{ searchQuery() }}"</div>
       } 
       @else {
         <div class="player-grid">
           @for (player of searchResults(); track player.id) {
-            <div class="player-card" (click)="viewPlayer(player.id)" style="cursor: pointer;">
-              <img [src]="player.image" (error)="onImageError($event)" alt="player image" class="player-img">
-              <div class="player-info">
-                <h3>{{ player.name }}</h3>
-                <p class="team-name" style="margin: 5px 0; color: #555; font-size: 14px;">{{ player.team }}</p>
-                <span class="position-badge">{{ player.position }}</span>
-              </div>
-            </div>
+            <app-player-card [player]="player"></app-player-card>
           }
         </div>
       }
-  
     </div>
-  </div>
+  } 
+  
+  @else {
+    <div class="league-section">
+      <app-league-selector 
+        [selectedLeagueId]="espnService.selectedLeague()" 
+        (leagueChange)="changeLeague($event)">
+      </app-league-selector>
+
+      <h3 class="section-title" style="text-align: center; margin: 20px 0;">🌟 นักเตะที่น่าสนใจในลีก</h3>
+
+      @if (isLeagueLoading()) {
+        <div class="status-message">⏳ กำลังโหลดรายชื่อนักเตะในลีก...</div>
+      } @else {
+        <div class="player-grid">
+          @for (player of leaguePlayers(); track player.id + $index) {
+            <app-player-card [player]="player"></app-player-card>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

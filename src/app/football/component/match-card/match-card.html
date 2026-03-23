@@ -1,0 +1,33 @@
+<div class="match-card">
+  
+  <div class="card-header">
+    <span class="time">⏰ {{ match?.date | date: 'dd MMM yyyy - HH:mm' }} น.</span>
+    <span>🏟️ {{ getMatchVenue() }}</span>
+  </div>
+  
+  <div class="card-body">
+    <div class="team" [routerLink]="['/team', getHomeTeamId()]">
+      <img [src]="getHomeTeamLogo()" alt="home logo" />
+      <h4>{{ getHomeTeamName() }}</h4>
+    </div>
+    
+    <div class="score-board">
+      <p>{{ getMatchStatus() }}</p>
+      <h2>{{ getHomeScore() }} - {{ getAwayScore() }}</h2>
+    </div>
+    
+    <div class="team" [routerLink]="['/team', getAwayTeamId()]">
+      <img [src]="getAwayTeamLogo()" alt="away logo" />
+      <h4>{{ getAwayTeamName() }}</h4>
+    </div>
+  </div>
+  
+  <div class="card-footer">
+    @if (isMatchFinished()) {
+      <button class="stats-btn" [routerLink]="['/match', match?.id]">📊 สถิติในเกม</button>
+    } @else {
+      <span class="waiting-text">⏳ รอการแข่งขันเริ่ม</span>
+    }
+  </div>
+  
+</div>

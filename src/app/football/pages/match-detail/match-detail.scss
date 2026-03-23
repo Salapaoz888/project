@@ -63,25 +63,26 @@ $bg-danger-light: #fff4f4;
       .team-info {
         flex: 1;
 
-        .logo-wrapper {
-          background: $bg-white;
-          padding: 10px;
-          border-radius: 50%;
-          display: inline-block;
-          box-shadow: 0 0 15px rgba(255,255,255,0.1);
+       /* สมมติว่าคลาสที่หุ้มรูปโลโก้อยู่ชื่อ .logo-wrapper หรือ .team-logo */
+.logo-wrapper {
+  display: flex;
+  justify-content: center; /* 🌟 จัดให้อยู่กึ่งกลางแนวนอน */
+  align-items: center;     /* 🌟 จัดให้อยู่กึ่งกลางแนวตั้ง */
+  margin: 0 auto;          /* 🌟 ดันให้ตัวกล่องเองอยู่ตรงกลางของพื้นที่ด้วย */
+  
+  /* โค้ดเดิมที่คุณยีนส์มีอยู่แล้ว เช่น width, height, background-color */
+  width: 80px; 
+  height: 80px;
+  border-radius: 50%; /* ทำเป็นวงกลม */
+  background-color: white;
 
-          img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-          }
-        }
-
-        h3 {
-          margin-top: 15px;
-          font-size: 20px;
-        }
-      }
+  img {
+    width: 150%;
+    height: 150%;
+    object-fit: contain; /* 🌟 สำคัญมาก! บังคับให้โลโก้ไม่ยืดและอยู่ในกรอบ */
+    padding: 10px; /* เว้นระยะขอบข้างในนิดนึง โลโก้จะได้ไม่ชนขอบวงกลม */
+  }
+}}
 
       .score-text {
         flex: 1;

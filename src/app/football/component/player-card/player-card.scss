@@ -1,0 +1,49 @@
+:host {
+    display: block; /* 🌟 สำคัญมากสำหรับ Component เพื่อให้การจัด Layout สมบูรณ์ */
+  }
+  
+  .card-container {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(30, 58, 138, 0.1);
+      border-color: #00529f; /* สีน้ำเงินสไตล์เว็บคุณยีนส์ */
+      background: #f8fafc;
+    }
+  
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f1f5f9;
+      border: 2px solid #e2e8f0;
+    }
+  
+    .player-info {
+      h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+      }
+      strong {
+        color: #00529f;
+      }
+    }
+  }

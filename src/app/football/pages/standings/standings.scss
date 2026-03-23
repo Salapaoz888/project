@@ -1,133 +1,51 @@
 .standings-container {
-    padding: 20px;
-    max-width: 950px;
-    margin: 0 auto;
-  
-    h2 {
-      margin-bottom: 20px;
-    }
-  }
-  
-  .table-wrapper {
-    overflow-x: auto;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  .standings-table {
-    width: 100%;
-    border-collapse: collapse;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: sans-serif;
+
+  h2 {
     text-align: center;
-    font-family: sans-serif;
-  
-    thead {
-      tr {
-        background-color: #f8f9fa;
-        border-bottom: 2px solid #dee2e6;
-        color: #555;
-        font-size: 14px;
-      }
-  
-      th {
-        padding: 15px 10px;
-  
-        &.text-left {
-          text-align: left;
-        }
-  
-        &.highlight-th {
-          color: #333;
-          font-size: 16px;
-        }
-      }
-    }
-  
-    tbody {
-      tr {
-        border-bottom: 1px solid #eee;
-        transition: background 0.2s;
-        
-        /* Hover เอฟเฟกต์สำหรับแต่ละแถว */
-        &:hover {
-          background-color: #f9f9f9;
-        }
-      }
-  
-      td {
-        padding: 12px 10px;
-        color: #666;
-  
-        &.rank {
-          font-weight: bold;
-          color: #444;
-        }
-  
-        &.team-cell {
-          text-align: left;
-        }
-  
-        &.points {
-          font-weight: bold;
-          font-size: 16px;
-          color: #111;
-        }
-  
-        &.empty-state {
-          padding: 40px;
-          color: gray;
-          text-align: center;
-        }
-      }
-    }
+    color: #333;
+    margin-bottom: 20px;
   }
-  
-  /* ส่วนของลิงก์ชื่อทีม */
-  .team-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    color: black;
-  
-    &:hover {
-      text-decoration: underline;
-    }
-  
-    .team-logo {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-    }
-  
-    .team-name {
-      font-weight: 500;
-    }
+
+  .status-message {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    &.empty { color: #d9534f; }
   }
-  
-  /* ส่วนของคำอธิบายโซนสี (Legend) */
+
+  /* 🌟 คงสไตล์ แถบอธิบายสัญลักษณ์ (Legend) ของเดิมไว้ */
   .legend-container {
-    margin-top: 20px;
     display: flex;
+    justify-content: center;
     gap: 20px;
-    font-size: 13px;
-    color: #555;
+    margin-top: 25px;
     flex-wrap: wrap;
-  
+
     .legend-item {
       display: flex;
       align-items: center;
       gap: 8px;
-  
+      font-size: 14px;
+      color: #555;
+
       .color-box {
-        width: 12px;
-        height: 12px;
-        border-radius: 2px;
-  
-        &.ucl { background: #00529f; }
-        &.uel { background: #d65100; }
-        &.relegation { background: #d9534f; }
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        
+        &.ucl { background-color: #00529f; } /* ปรับสีให้ตรงกับที่คุณยีนส์ต้องการได้เลย */
+        &.uel { background-color: #f39c12; }
+        &.relegation { background-color: #e74c3c; }
       }
     }
   }
+}

@@ -1,5 +1,4 @@
 <div class="match-container">
-  
   <button class="back-btn" routerLink="/home">⬅️ กลับไปหน้าแรก</button>
 
   @if (isLoading()) {
@@ -7,29 +6,42 @@
       <h2>⏳ กำลังโหลดข้อมูล...</h2>
     </div>
   } @else {
-    
     <div class="scoreboard">
       <p class="match-status">{{ header()?.competitions?.[0]?.status?.type?.detail }}</p>
-      
+
       <div class="score-display">
         <div class="team-info">
           <div class="logo-wrapper">
-            <img [src]="header()?.competitions?.[0]?.competitors?.[0]?.team?.logo || header()?.competitions?.[0]?.competitors?.[0]?.team?.logos?.[0]?.href || ''" alt="home logo">
+            <img
+              [src]="
+                header()?.competitions?.[0]?.competitors?.[0]?.team?.logo ||
+                header()?.competitions?.[0]?.competitors?.[0]?.team?.logos?.[0]?.href ||
+                ''
+              "
+              alt="home logo"
+            />
           </div>
           <h3>{{ header()?.competitions?.[0]?.competitors?.[0]?.team?.name }}</h3>
         </div>
-        
+
         <div class="score-text">
           <h1>
-            {{ header()?.competitions?.[0]?.competitors?.[0]?.score || '0' }} 
-            <span class="divider">-</span> 
+            {{ header()?.competitions?.[0]?.competitors?.[0]?.score || '0' }}
+            <span class="divider">-</span>
             {{ header()?.competitions?.[0]?.competitors?.[1]?.score || '0' }}
           </h1>
         </div>
-        
+
         <div class="team-info">
           <div class="logo-wrapper">
-            <img [src]="header()?.competitions?.[0]?.competitors?.[1]?.team?.logo || header()?.competitions?.[0]?.competitors?.[1]?.team?.logos?.[0]?.href || ''" alt="away logo">
+            <img
+              [src]="
+                header()?.competitions?.[0]?.competitors?.[1]?.team?.logo ||
+                header()?.competitions?.[0]?.competitors?.[1]?.team?.logos?.[0]?.href ||
+                ''
+              "
+              alt="away logo"
+            />
           </div>
           <h3>{{ header()?.competitions?.[0]?.competitors?.[1]?.team?.name }}</h3>
         </div>
@@ -39,13 +51,12 @@
     @if (homeLineup() && awayLineup()) {
       <div class="lineups-section">
         <h3 class="section-title">📋 แผนการเล่น 11 ตัวจริง</h3>
-        
+
         <div class="livescore-pitch-container">
-          
           @if (homeLineup(); as home) {
             <div class="team-bar home-bar">
               <div class="team-info-left">
-                <img [src]="home.team.logos?.[0]?.href || ''" alt="logo">
+                <img [src]="home.team.logos?.[0]?.href || ''" alt="logo" />
                 <span>{{ home.team.name }}</span>
               </div>
               <div class="formation">{{ home.formation }}</div>
@@ -53,7 +64,6 @@
           }
 
           <div class="full-pitch">
-            
             <div class="pitch-markings">
               <div class="penalty-box top"></div>
               <div class="center-circle"></div>
@@ -65,7 +75,9 @@
               <div class="team-half home-half">
                 @for (row of home.lineupRows; track $index) {
                   <div class="pitch-row">
-                    <ng-container *ngTemplateOutlet="playerNodes; context: { players: row, type: 'home' }"></ng-container>
+                    <ng-container
+                      *ngTemplateOutlet="playerNodes; context: { players: row, type: 'home' }"
+                    ></ng-container>
                   </div>
                 }
               </div>
@@ -75,7 +87,9 @@
               <div class="team-half away-half">
                 @for (row of getReversedRows(away.lineupRows); track $index) {
                   <div class="pitch-row">
-                    <ng-container *ngTemplateOutlet="playerNodes; context: { players: row, type: 'away' }"></ng-container>
+                    <ng-container
+                      *ngTemplateOutlet="playerNodes; context: { players: row, type: 'away' }"
+                    ></ng-container>
                   </div>
                 }
               </div>
@@ -85,19 +99,17 @@
           @if (awayLineup(); as away) {
             <div class="team-bar away-bar">
               <div class="team-info-left">
-                <img [src]="away.team.logos?.[0]?.href || ''" alt="logo">
+                <img [src]="away.team.logos?.[0]?.href || ''" alt="logo" />
                 <span>{{ away.team.name }}</span>
               </div>
               <div class="formation">{{ away.formation }}</div>
             </div>
           }
-          
         </div>
       </div>
     }
 
     <div class="details-grid">
-      
       <div class="detail-card">
         <h3 class="card-title">⏱️ ไทม์ไลน์ (Events)</h3>
         @if (keyEvents().length > 0) {
@@ -134,15 +146,39 @@
             <div class="stats-list">
               @for (stat of box.teams[0].statistics; track stat.name; let i = $index) {
                 <div class="stat-row">
-                  <strong class="stat-box home-stat"
-                          [class.winner]="compareStats(box.teams[0].statistics[i].displayValue, box.teams[1].statistics[i].displayValue) === 'home'"
-                          [class.loser]="compareStats(box.teams[0].statistics[i].displayValue, box.teams[1].statistics[i].displayValue) === 'away'">
+                  <strong
+                    class="stat-box home-stat"
+                    [class.winner]="
+                      compareStats(
+                        box.teams[0].statistics[i].displayValue,
+                        box.teams[1].statistics[i].displayValue
+                      ) === 'home'
+                    "
+                    [class.loser]="
+                      compareStats(
+                        box.teams[0].statistics[i].displayValue,
+                        box.teams[1].statistics[i].displayValue
+                      ) === 'away'
+                    "
+                  >
                     {{ box.teams[0].statistics[i].displayValue }}
                   </strong>
                   <span class="stat-label">{{ stat.label }}</span>
-                  <strong class="stat-box away-stat"
-                          [class.winner]="compareStats(box.teams[0].statistics[i].displayValue, box.teams[1].statistics[i].displayValue) === 'away'"
-                          [class.loser]="compareStats(box.teams[0].statistics[i].displayValue, box.teams[1].statistics[i].displayValue) === 'home'">
+                  <strong
+                    class="stat-box away-stat"
+                    [class.winner]="
+                      compareStats(
+                        box.teams[0].statistics[i].displayValue,
+                        box.teams[1].statistics[i].displayValue
+                      ) === 'away'
+                    "
+                    [class.loser]="
+                      compareStats(
+                        box.teams[0].statistics[i].displayValue,
+                        box.teams[1].statistics[i].displayValue
+                      ) === 'home'
+                    "
+                  >
                     {{ box.teams[1].statistics[i].displayValue }}
                   </strong>
                 </div>
@@ -152,7 +188,6 @@
         }
       }
     </div>
-
   }
 </div>
 

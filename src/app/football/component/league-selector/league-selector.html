@@ -1,0 +1,11 @@
+<div class="league-selector">
+    @for (league of availableLeagues; track league.id) {
+      <button
+        class="league-btn"
+        [class.active]="selectedLeagueId === league.id"
+        (click)="onSelect(league.id)"
+      >
+        {{ league.name }}
+      </button>
+    }
+  </div>

@@ -2,7 +2,18 @@
   
   <h1 class="page-title">🛡️ ข้อมูลสโมสร (Teams)</h1>
 
-  
+  <div class="league-selector">
+    @for (league of availableLeagues; track league.id) {
+      <button
+        class="league-btn"
+        [class.active]="espnService.selectedLeague() === league.id"
+        (click)="changeLeague(league.id)"
+      >
+        {{ league.name }}
+      </button>
+    }
+  </div>
+
 
   @if (isLoading()) {
     <div class="state-message">

@@ -1,0 +1,19 @@
+<div class="card-container" (click)="viewPlayer()">
+  
+    <img #img 
+         [src]="getImageUrl()" 
+         (error)="img.src = 'https://a.espncdn.com/combiner/i?img=/i/headshots/nophoto.png'"
+         alt="player">
+         
+    <div class="player-info">
+      <h4>{{ getName() }}</h4>
+      <p>
+        @if (player?.jersey) { <strong>#{{ player.jersey }}</strong> &bull; }
+        
+        @if (player?.teamName || player?.team) { <span>{{ player.teamName || player.team }}</span> &bull; }
+        
+        <span>{{ getSecondaryInfo() }}</span>
+      </p>
+    </div>
+    
+  </div>

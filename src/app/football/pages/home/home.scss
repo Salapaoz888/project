@@ -6,305 +6,173 @@ $border-light: #eee;
 
 .home-container {
   padding: 20px;
-  max-width: 850px;
+  max-width: 1350px;
   margin: 0 auto;
   font-family: sans-serif;
 
-  .page-title {
-    color: $text-dark;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+  /* 🌟 โครงสร้างหลัก: แบ่งหน้าจอ ซ้าย (ข่าว) - ขวา (เนื้อหาหลัก) */
+  .layout-wrapper {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* ข่าว 280px, เนื้อหาขวายืดตามพื้นที่ */
+    gap: 25px;
+    align-items: start;
+    margin-top: 20px;
 
-  .league-selector {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    justify-content: center;
-    scrollbar-width: none;
-    &::-webkit-scrollbar { display: none; }
-
-    .league-btn {
-      padding: 10px 22px;
-      border: 1px solid #ddd;
-      border-radius: 25px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-weight: bold;
-      background: white;
-      color: #555;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-
-      &:hover { background: #f0f4f8; }
-
-      &.active {
-        background: $primary;
-        color: white;
-        border-color: $primary;
-      }
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr; /* ถ้าจอมือถือให้เรียงลงมา */
     }
   }
 
-  .date-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* ==========================================
+     📰 ตกแต่งคอลัมน์ข่าว (ซ้าย) 
+     ========================================== */
+  .news-sidebar {
     background: white;
-    padding: 15px 25px;
     border-radius: 12px;
+    padding: 20px 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
     border: 1px solid $border-light;
+    position: sticky; 
+    top: 20px; 
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
 
-    .nav-btn {
-      background: $bg-light;
-      border: 1px solid #ddd;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+    .section-title {
+      font-size: 18px;
       font-weight: bold;
-      transition: background 0.2s;
-
-      &:hover { background: #e9ecef; }
+      color: $text-dark;
+      margin-top: 0;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid $border-light;
     }
 
-    .date-display {
-      text-align: center;
+    .news-list-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-      h3 {
-        margin: 0;
-        color: $primary;
-        font-size: 18px;
-      }
+  
 
-      .reset-btn {
-        background: none;
-        border: none;
-        color: $primary;
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: 13px;
-        margin-top: 4px;
-        opacity: 0.7;
-
-        &:hover { opacity: 1; }
+      .news-content {
+        h4 {
+          font-size: 14px; font-weight: bold; margin: 0; line-height: 1.4;
+          display: -webkit-box ; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        small { font-size: 12px; color: $text-muted; margin-top: 6px; display: block; }
       }
     }
-  }
-
-  .match-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
 
     .state-message {
-      text-align: center;
-      padding: 60px;
-      background: white;
-      border-radius: 15px;
-      color: #999;
-      
-      &.empty { border: 2px dashed $border-light; }
-      h2, h3 { color: #666; margin-bottom: 10px; }
+      text-align: center; color: $text-muted; padding: 20px 0; font-size: 14px;
+      &.empty { color: #aaa; }
+    }
+  }
+
+  /* ==========================================
+     ⚽ ตกแต่งเนื้อหาหลัก (ขวา) 
+     ========================================== */
+  .main-content {
+    min-width: 0; /* 🌟 สำคัญ! ป้องกันไม่ให้ Grid ระเบิด */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px; /* แมตช์ 1 ส่วน, Top4 กว้าง 320px */
+      gap: 25px;
+      align-items: start;
+
+      @media (max-width: 1150px) {
+        grid-template-columns: 1fr;
+        .col-sidebar { margin-top: 20px; }
+      }
     }
 
-    .match-card {
+    .date-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      background: white; padding: 15px 25px; border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px;
       border: 1px solid $border-light;
-      border-radius: 12px;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      .nav-btn {
+        background: $bg-light; border: 1px solid #ddd; padding: 8px 16px;
+        border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+        &:hover { background: #e9ecef; }
       }
 
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #f5f5f5;
-        padding-bottom: 12px;
-        margin-bottom: 15px;
-        font-size: 13px;
-        color: $text-muted;
-
-        .time { color: #d9534f; font-weight: bold; }
-      }
-
-      .card-body {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .team {
-          text-align: center;
-          flex: 1;
-          cursor: pointer;
-          transition: opacity 0.2s;
-
-          &:hover { opacity: 0.8; }
-
-          img { width: 55px; height: 55px; object-fit: contain; }
-
-          h4 {
-            margin: 10px 0 0 0;
-            font-size: 15px;
-            color: $text-dark;
-          }
-        }
-
-        .score-board {
-          flex: 0.8;
-          text-align: center;
-          background: #fcfcfc;
-          padding: 12px;
-          border-radius: 12px;
-          border: 1px solid #f0f0f0;
-
-          p {
-            color: #999;
-            margin: 0 0 5px 0;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
-
-          h2 {
-            margin: 0;
-            font-size: 34px;
-            color: #222;
-            letter-spacing: 2px;
-          }
-        }
-      }
-
-      .card-footer {
+      .date-display {
         text-align: center;
-        margin-top: 18px;
-        border-top: 1px solid #f5f5f5;
-        padding-top: 15px;
-
-        .stats-btn {
-          background: #28a745;
-          color: white;
-          border: none;
-          padding: 10px 25px;
-          border-radius: 25px;
-          font-size: 14px;
-          font-weight: bold;
-          cursor: pointer;
-          box-shadow: 0 4px 6px rgba(40,167,69,0.2);
-          transition: background 0.2s;
-
-          &:hover { background: #218838; }
-        }
-
-        .waiting-text {
-          color: #bbb;
-          font-size: 14px;
-          font-style: italic;
+        h3 { margin: 0; color: $primary; font-size: 18px; }
+        .reset-btn {
+          background: none; border: none; color: $primary; text-decoration: underline;
+          cursor: pointer; font-size: 13px; margin-top: 4px; opacity: 0.7;
+          &:hover { opacity: 1; }
         }
       }
     }
+
+    .match-list {
+      display: flex; flex-direction: column; gap: 15px;
+
+      .state-message {
+        text-align: center; padding: 60px; background: white; border-radius: 15px; color: #999;
+        &.empty { border: 2px dashed $border-light; }
+        h2, h3 { color: #666; margin-bottom: 10px; }
+      }
+    }
+
+    /* 🌟 ตกแต่ง Widget ทางขวา (Top 4) */
+    .widget {
+      background: white; border-radius: 12px; border: 1px solid $border-light;
+      padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      position: sticky; top: 20px; 
+
+      .widget-title {
+        margin-top: 0; margin-bottom: 15px; font-size: 16px;
+        color: $primary; border-bottom: 2px solid $border-light; padding-bottom: 10px;
+      }
+    }
+
+    .mini-table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+
+      th { text-align: left; color: #888; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+      td { padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
+      tr:last-child td { border-bottom: none; }
+      tr:hover { background: #fafafa; }
+      
+      .team-cell {
+        display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;
+        img { width: 22px; height: 22px; object-fit: contain; }
+      }
+      .center { text-align: center; }
+      .rank-num { color: #888; font-weight: bold; }
+      .pts { font-weight: bold; color: $primary; }
+    }
   }
-}
 
-// 🌟 1. ขยายความกว้างของคอนเทนเนอร์เพื่อให้พอดี 3 คอลัมน์
-.home-container {
-  max-width: 1300px; // ปรับจากเดิม 850px
-}
-
-// 🌟 2. วางโครงสร้าง Dashboard Grid (ซ้าย-กลาง-ขวา)
-.dashboard-grid {
-  display: grid;
-  // 🌟 ปรับให้โปรแกรมการแข่งขันกว้างขึ้น และตารางคะแนนอยู่ทางขวา
-  grid-template-columns: 1fr 350px; 
-  gap: 25px;
-  align-items: start;
-
-  // สำหรับหน้าจอแท็บเล็ต/แล็ปท็อป (เอา Widget มาเรียงข้างล่างแทน)
-  @media (max-width: 1100px) {
-    grid-template-columns: 1fr 1fr;
-    .col-main { grid-column: 1 / -1; }
+  /* ตกแต่งตารางคะแนนแบบเต็มจอ */
+  .standings-container {
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid $border-light;
+    overflow-x: auto;
   }
-
-  // สำหรับมือถือ (เรียงเป็นแถวเดียวลงมา)
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-    .col-main { grid-column: 1; }
+  .standings-table {
+    width: 100%; border-collapse: collapse; font-size: 14px; text-align: center;
+    th { padding: 12px; border-bottom: 2px solid #ddd; color: #555; }
+    td { padding: 12px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; cursor: pointer; }
+    .left { text-align: left; }
+    .center { text-align: center; }
+    .team-name {
+      display: flex; align-items: center; gap: 10px; font-weight: bold;
+      img { width: 24px; height: 24px; object-fit: contain; }
+      .abbr { display: none; color: #888; font-weight: normal; }
+      @media (max-width: 600px) { .name { display: none; } .abbr { display: inline; } }
+    }
+    .pts { font-weight: bold; color: $primary; font-size: 16px; }
+    @media (max-width: 768px) { .hide-mobile { display: none; } }
   }
-}
-
-// 🌟 3. ตกแต่ง Widget ทางขวา
-.widget {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid $border-light;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-
-  &.mt-15 { margin-top: 15px; }
-
-  .widget-title {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: $primary;
-    border-bottom: 2px solid $border-light;
-    padding-bottom: 10px;
-  }
-}
-
-// 🌟 4. ตาราง Top 4
-.mini-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-
-  th { text-align: left; color: #888; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-  td { padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover { background: #fafafa; }
-  
-  .team-cell {
-    display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;
-    img { width: 22px; height: 22px; object-fit: contain; }
-  }
-  .center { text-align: center; }
-  .rank-num { color: #888; font-weight: bold; }
-  .pts { font-weight: bold; color: $primary; }
-}
-
-// 🌟 5. ลิสต์ดาวซัลโว / แอสซิสต์
-.leader-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #f9f9f9;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover { background: #fafafa; }
-  &:last-child { border-bottom: none; }
-
-  .rank { font-weight: bold; color: #bbb; width: 15px; }
-  
-  .athlete-img {
-    width: 40px; height: 40px; border-radius: 50%;
-    object-fit: cover; background: #eee; border: 1px solid #eee;
-  }
-  
-  .info {
-    flex: 1;
-    .name { font-weight: bold; font-size: 14px; color: #333; }
-    .team { font-size: 12px; color: #888; }
-  }
-  
-  .stat-value { font-size: 18px; font-weight: bold; color: $primary; }
-}

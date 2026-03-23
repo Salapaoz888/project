@@ -1,0 +1,70 @@
+@if (isCompact) {
+    <table class="mini-table">
+      <thead>
+        <tr>
+          <th width="30">#</th>
+          <th>ทีม</th>
+          <th width="30" class="center">แข่ง</th>
+          <th width="30" class="center">แต้ม</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (entry of standings; track entry.team.id) {
+          <tr [routerLink]="['/team', entry.team.id]" style="cursor: pointer">
+            <td class="center rank-num">{{ getStat(entry.stats, 'rank') }}</td>
+            <td class="team-cell">
+              <img [src]="getTeamLogo(entry)" alt="logo" />
+              <span>{{ entry.team.abbreviation }}</span>
+            </td>
+            <td class="center">{{ getStat(entry.stats, 'gamesPlayed') }}</td>
+            <td class="center pts">{{ getStat(entry.stats, 'points') }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  
+  } @else {
+    <div class="standings-container">
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th class="center">อันดับ</th>
+            <th class="left">สโมสร</th>
+            <th class="center hide-mobile">แข่ง</th>
+            <th class="center hide-mobile">ชนะ</th>
+            <th class="center hide-mobile">เสมอ</th>
+            <th class="center hide-mobile">แพ้</th>
+            <th class="center hide-mobile">ได้</th>
+            <th class="center hide-mobile">เสีย</th>
+            <th class="center">+/-</th>
+            <th class="center pts">แต้ม</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (entry of standings; track entry.team.id; let i = $index) {
+              
+              <tr [routerLink]="['/team', entry.team.id]" style="cursor: pointer"
+                  [class.zone-ucl]="i < 4" 
+                  [class.zone-uel]="i === 4"
+                  [class.zone-relegation]="i >= standings.length - 3">
+                
+                <td class="center rank">{{ getStat(entry.stats, 'rank') }}</td>
+                <td class="left team-name">
+                  <img [src]="getTeamLogo(entry)" alt="logo" />
+                  <span class="name">{{ entry.team.name }}</span>
+                  <span class="abbr">{{ entry.team.abbreviation }}</span>
+                </td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'gamesPlayed') }}</td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'wins') }}</td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'ties') }}</td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'losses') }}</td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'pointsFor') }}</td>
+                <td class="center hide-mobile">{{ getStat(entry.stats, 'pointsAgainst') }}</td>
+                <td class="center diff">{{ getStat(entry.stats, 'pointDifferential') }}</td>
+                <td class="center pts">{{ getStat(entry.stats, 'points') }}</td>
+              </tr>
+            }
+          </tbody>
+      </table>
+    </div>
+  }

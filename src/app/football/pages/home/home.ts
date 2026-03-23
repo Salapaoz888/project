@@ -1,19 +1,25 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+
+import { MatchCardComponent } from '../../component/match-card/match-card';
 import { 
   EspnService, 
   EspnEvent, 
   EspnStandingsEntry, 
   EspnScoreboardResponse, 
   EspnStandingsResponse,
-  EspnStandingsStat
+ 
+  EspnNewsArticle // 🌟 1. นำเข้า Interface ข่าวมาด้วย
 } from '../../services/espn';
+import { LeagueSelectorComponent } from '../../component/league-selector/league-selector';
+import { NewsCardComponent } from '../../component/news-card/news-card';
+import { StandingsTableComponent } from '../../component/standings-table/standings-table';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule,MatchCardComponent,LeagueSelectorComponent,NewsCardComponent,StandingsTableComponent],
   providers: [DatePipe],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
@@ -29,12 +35,14 @@ export class HomeComponent implements OnInit {
   startDate = signal<Date>(new Date());
   endDate = signal<Date>(new Date());
 
-
   standings = signal<EspnStandingsEntry[]>([]);
   isStandingsLoading = signal<boolean>(false);
   
-  
   topStandings = computed(() => this.standings().slice(0, 4));
+
+  // 🌟 2. เพิ่ม Signal สำหรับเก็บข้อมูลข่าว
+  newsList = signal<EspnNewsArticle[]>([]);
+  isNewsLoading = signal<boolean>(true);
 
   availableLeagues = [
     { id: 'eng.1', name: 'Premier League' },
@@ -47,6 +55,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.setWeek(new Date()); 
     this.fetchStandings(); 
+    this.fetchNews(); // 🌟 โหลดข่าวตอนเปิดหน้าแรก
   }
 
   switchTab(tab: 'matches' | 'standings') {
@@ -57,9 +66,11 @@ export class HomeComponent implements OnInit {
     this.espnService.setLeague(leagueId);
     this.matches.set([]);
     this.standings.set([]);
+    this.newsList.set([]); // 🌟 ล้างข่าวเก่าออกก่อน
 
     this.fetchMatches();
     this.fetchStandings();
+    this.fetchNews(); // 🌟 โหลดข่าวของลีกใหม่
   }
 
   // ==================== ส่วนวันที่และแมตช์ ====================
@@ -91,10 +102,8 @@ export class HomeComponent implements OnInit {
     const endStr = this.datePipe.transform(this.endDate(), 'yyyyMMdd') || '';
     
     this.espnService.getMatches(`${startStr}-${endStr}`).subscribe({
-      // 🌟 แก้ไข: กำหนด Type เป็น EspnScoreboardResponse
       next: (data: EspnScoreboardResponse) => {
         if (data?.events) {
-          // 🌟 แก้ไข: กำหนด Type ของ a และ b ให้เป็น EspnEvent
           const sorted = data.events.sort((a: EspnEvent, b: EspnEvent) => 
             new Date(a.date).getTime() - new Date(b.date).getTime()
           );
@@ -112,7 +121,6 @@ export class HomeComponent implements OnInit {
   fetchStandings() {
     this.isStandingsLoading.set(true);
     this.espnService.getStandings().subscribe({
-      // 🌟 แก้ไข: กำหนด Type เป็น EspnStandingsResponse
       next: (data: EspnStandingsResponse) => {
         if (data?.children?.[0]?.standings?.entries) {
           this.standings.set(data.children[0].standings.entries);
@@ -125,9 +133,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // 🌟 แก้ไข: กำหนด Type ของ stats เป็น EspnStandingsStat[] และผลลัพธ์เป็น string | number
-  getStat(stats: EspnStandingsStat[], statName: string): string | number {
-    if (!stats) return '-';
-    return stats.find(s => s.name === statName)?.value ?? '-';
+  
+
+  // ==================== ส่วนข่าวล่าสุด (News) ====================
+  // 🌟 3. ฟังก์ชันดึงข้อมูลข่าวล่าสุด
+  fetchNews() {
+    this.isNewsLoading.set(true);
+    this.espnService.getLeagueNews().subscribe({
+      next: (res) => {
+        this.newsList.set(res.articles || []);
+        this.isNewsLoading.set(false);
+      },
+      error: (err) => {
+        console.error('News Error:', err);
+        this.newsList.set([]);
+        this.isNewsLoading.set(false);
+      }
+    });
   }
 }

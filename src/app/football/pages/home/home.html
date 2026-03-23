@@ -1,168 +1,85 @@
 <div class="home-container">
-  <div class="league-selector">
-    @for (league of availableLeagues; track league.id) {
-      <button
-        class="league-btn"
-        [class.active]="espnService.selectedLeague() === league.id"
-        (click)="changeLeague(league.id)"
-      >
-        {{ league.name }}
-      </button>
-    }
-  </div>
+  <app-league-selector
+    [selectedLeagueId]="espnService.selectedLeague()"
+    (leagueChange)="changeLeague($event)"
+  >
+  </app-league-selector>
 
-  @if (activeTab() === 'matches') {
-    <div class="dashboard-grid">
-      <div class="col-main">
-        <div class="date-nav">
-          <button class="nav-btn" (click)="changeWeek(-1)">⏪ ก่อนหน้า</button>
-          <div class="date-display">
-            <h3>📅 {{ startDate() | date: 'dd MMM' }} - {{ endDate() | date: 'dd MMM yyyy' }}</h3>
-            <button class="reset-btn" (click)="goToThisWeek()">กลับมาสัปดาห์นี้</button>
-          </div>
-          <button class="nav-btn" (click)="changeWeek(1)">ถัดไป ⏩</button>
+  <div class="layout-wrapper">
+    <aside class="news-sidebar">
+      <h3 class="section-title">📰 ข่าวล่าสุด</h3>
+
+      @if (isNewsLoading()) {
+        <div class="state-message">⏳ กำลังโหลดข่าว...</div>
+      } @else if (newsList().length > 0) {
+        <div class="news-list-vertical">
+          @for (news of newsList(); track news.headline) {
+            <app-news-card [news]="news"></app-news-card>
+          }
         </div>
+      } @else {
+        <div class="state-message empty">ไม่มีข่าวสำหรับลีกนี้</div>
+      }
+    </aside>
 
-        <div class="match-list">
-          @if (isLoading()) {
-            <div class="state-message"><h2>⏳ กำลังโหลดโปรแกรม...</h2></div>
-          } @else {
-            @for (match of matches(); track match.id) {
-              <div class="match-card">
-                <div class="card-header">
-                  <span class="time">⏰ {{ match.date | date: 'dd MMM yyyy - HH:mm' }} น.</span>
-                  <span>🏟️ {{ match.competitions?.[0]?.venue?.fullName || 'ไม่ระบุสนาม' }}</span>
-                </div>
-                <div class="card-body">
-                  <div
-                    class="team"
-                    [routerLink]="['/team', match.competitions?.[0]?.competitors?.[0]?.team?.id]"
-                  >
-                    <img
-                      [src]="
-                        match.competitions?.[0]?.competitors?.[0]?.team?.logo ||
-                        match.competitions?.[0]?.competitors?.[0]?.team?.logos?.[0]?.href ||
-                        ''
-                      "
-                      alt="home logo"
-                    />
-                    <h4>{{ match.competitions?.[0]?.competitors?.[0]?.team?.name }}</h4>
-                  </div>
-                  <div class="score-board">
-                    <p>{{ match.status?.type?.detail }}</p>
-                    <h2>
-                      {{ match.competitions?.[0]?.competitors?.[0]?.score || '0' }} -
-                      {{ match.competitions?.[0]?.competitors?.[1]?.score || '0' }}
-                    </h2>
-                  </div>
-                  <div
-                    class="team"
-                    [routerLink]="['/team', match.competitions?.[0]?.competitors?.[1]?.team?.id]"
-                  >
-                    <img
-                      [src]="
-                        match.competitions?.[0]?.competitors?.[1]?.team?.logo ||
-                        match.competitions?.[0]?.competitors?.[1]?.team?.logos?.[0]?.href ||
-                        ''
-                      "
-                      alt="away logo"
-                    />
-                    <h4>{{ match.competitions?.[0]?.competitors?.[1]?.team?.name }}</h4>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  @if (match.status?.type?.state !== 'pre') {
-                    <button class="stats-btn" [routerLink]="['/match', match.id]">
-                      📊 สถิติในเกม
-                    </button>
+    <main class="main-content">
+      @if (activeTab() === 'matches') {
+        <div class="dashboard-grid">
+          <div class="col-main">
+            <div class="date-nav">
+              <button class="nav-btn" (click)="changeWeek(-1)">⏪ ก่อนหน้า</button>
+              <div class="date-display">
+                <h3>
+                  📅 {{ startDate() | date: 'dd MMM' }} - {{ endDate() | date: 'dd MMM yyyy' }}
+                </h3>
+                <button class="reset-btn" (click)="goToThisWeek()">กลับมาสัปดาห์นี้</button>
+              </div>
+              <button class="nav-btn" (click)="changeWeek(1)">ถัดไป ⏩</button>
+            </div>
+
+            <div class="match-list">
+              @if (isLoading()) {
+                <div class="state-message"><h2>⏳ กำลังโหลดโปรแกรม...</h2></div>
+              } @else {
+                @for (match of matches(); track match.id) {
+                  <app-match-card [match]="match"></app-match-card>
+                } @empty {
+                  <div class="state-message empty"><h3>🚫 ไม่มีโปรแกรมการแข่งขัน</h3></div>
+                }
+              }
+            </div>
+          </div>
+
+          <div class="col-sidebar">
+            <div class="widget">
+              @if (isStandingsLoading()) {
+                <div style="text-align: center; color: gray">กำลังโหลด...</div>
+              } @else {
+                <div class="col-sidebar">
+                  @if (isStandingsLoading()) {
+                    <div style="text-align: center; color: gray">กำลังโหลด...</div>
                   } @else {
-                    <span class="waiting-text">⏳ รอการแข่งขันเริ่ม</span>
+                    <app-standings-table
+                      [standings]="topStandings()"
+                      [isCompact]="true"
+                    ></app-standings-table>
                   }
                 </div>
-              </div>
-            } @empty {
-              <div class="state-message empty"><h3>🚫 ไม่มีโปรแกรมการแข่งขัน</h3></div>
-            }
-          }
+              }
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="col-sidebar">
-        <div class="widget">
-          <h3 class="widget-title">🏆 Top 4 ตารางคะแนน</h3>
+      } @else {
+        @if (isStandingsLoading()) {
+          <div class="state-message"><h2>⏳ กำลังโหลดตารางคะแนน...</h2></div>
+        } @else {
           @if (isStandingsLoading()) {
-            <div style="text-align: center; color: gray">กำลังโหลด...</div>
+            <div class="state-message"><h2>⏳ กำลังโหลดตารางคะแนน...</h2></div>
           } @else {
-            <table class="mini-table">
-              <thead>
-                <tr>
-                  <th width="30">#</th>
-                  <th>ทีม</th>
-                  <th width="30" class="center">แข่ง</th>
-                  <th width="30" class="center">แต้ม</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (entry of topStandings(); track entry.team.id) {
-                  <tr [routerLink]="['/team', entry.team.id]" style="cursor: pointer">
-                    <td class="center rank-num">{{ getStat(entry.stats, 'rank') }}</td>
-                    <td class="team-cell">
-                      <img [src]="entry.team.logos?.[0]?.href || ''" alt="logo" />
-                      <span>{{ entry.team.abbreviation }}</span>
-                    </td>
-                    <td class="center">{{ getStat(entry.stats, 'gamesPlayed') }}</td>
-                    <td class="center pts">{{ getStat(entry.stats, 'points') }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+            <app-standings-table [standings]="standings()"></app-standings-table>
           }
-        </div>
-      </div>
-    </div>
-
-  } @else {
-    @if (isStandingsLoading()) {
-      <div class="state-message"><h2>⏳ กำลังโหลดตารางคะแนน...</h2></div>
-    } @else {
-      <div class="standings-container">
-        <table class="standings-table">
-          <thead>
-            <tr>
-              <th class="center">อันดับ</th>
-              <th class="left">สโมสร</th>
-              <th class="center hide-mobile">แข่ง</th>
-              <th class="center hide-mobile">ชนะ</th>
-              <th class="center hide-mobile">เสมอ</th>
-              <th class="center hide-mobile">แพ้</th>
-              <th class="center hide-mobile">ได้</th>
-              <th class="center hide-mobile">เสีย</th>
-              <th class="center">+/-</th>
-              <th class="center pts">แต้ม</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (entry of standings(); track entry.team.id) {
-              <tr [routerLink]="['/team', entry.team.id]">
-                <td class="center rank">{{ getStat(entry.stats, 'rank') }}</td>
-                <td class="left team-name">
-                  <img [src]="entry.team.logos?.[0]?.href" alt="logo" />
-                  <span class="name">{{ entry.team.name }}</span>
-                  <span class="abbr">{{ entry.team.abbreviation }}</span>
-                </td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'gamesPlayed') }}</td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'wins') }}</td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'ties') }}</td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'losses') }}</td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'pointsFor') }}</td>
-                <td class="center hide-mobile">{{ getStat(entry.stats, 'pointsAgainst') }}</td>
-                <td class="center diff">{{ getStat(entry.stats, 'pointDifferential') }}</td>
-                <td class="center pts">{{ getStat(entry.stats, 'points') }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-  }
+        }
+      }
+    </main>
+  </div>
 </div>

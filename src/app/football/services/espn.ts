@@ -107,13 +107,13 @@ export interface EspnAthlete {
   fullName: string;
   displayName?: string;
   shortName?: string;
-  
+
   // รูปและสังกัด
   headshot?: { href: string; alt?: string };
   jersey?: string;
   position?: { name: string; displayName?: string; abbreviation?: string };
   team?: { name: string; displayName?: string };
-  
+
   // Bio เชิงลึก
   age?: number;
   dateOfBirth?: string; // 🌟 เก็บวันเกิด
@@ -122,12 +122,20 @@ export interface EspnAthlete {
   birthPlace?: { city?: string; state?: string; country?: any };
   citizenship?: string;
   nationality?: string;
-  
+
   // สถานะและประสบการณ์
   experience?: { years?: number }; // 🌟 ประสบการณ์กี่ปี
   status?: { type?: { state?: string } }; // 🌟 สถานะ active หรือ inactive
-  
-
+}
+export interface EspnNewsArticle {
+  headline: string;
+  description?: string;
+  links?: { web: { href: string } };
+  images?: { url: string; alt?: string }[];
+  published: string;
+}
+export interface EspnNewsResponse {
+  articles: EspnNewsArticle[];
 }
 
 export interface EspnRosterResponse {
@@ -167,7 +175,6 @@ export interface EspnLeagueStatsResponse {
   leaders?: unknown[];
   categories?: unknown[];
 }
-
 
 export interface EspnMatchRosterPlayer {
   athlete: EspnAthlete;
@@ -292,9 +299,15 @@ export class EspnService {
     const url = `https://site.api.espn.com/apis/search/v2?query=${query}&limit=20`;
     return this.http.get<any>(url);
   }
- // 🌟 ฟังก์ชันดึงข้อมูลโปรไฟล์นักเตะ (ใช้ V3 Global API ทะลวงได้ทุกลีก)
- getPlayerProfile(id: string) {
-  const url = `https://site.web.api.espn.com/apis/common/v3/sports/soccer/athletes/${id}`;
-  return this.http.get<any>(url);
-}
+  // 🌟 ฟังก์ชันดึงข้อมูลโปรไฟล์นักเตะ (ใช้ V3 Global API ทะลวงได้ทุกลีก)
+  getPlayerProfile(id: string) {
+    const url = `https://site.web.api.espn.com/apis/common/v3/sports/soccer/athletes/${id}`;
+    return this.http.get<any>(url);
+  }
+  getLeagueNews(): Observable<EspnNewsResponse> {
+    const league = this.selectedLeague();
+    // ดึงข่าวฟุตบอล (Soccer) ตามลีกที่เลือกไว้แบบไดนามิก!
+    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league}/news`;
+    return this.http.get<EspnNewsResponse>(url);
+  }
 }

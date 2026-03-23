@@ -1,1 +1,96 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Prompt:wght@300;500;700&display=swap');
+
+:root {
+  /* 🎨 โทนสีแบบ Sports Premium */
+  --bg-main: #f4f7f9;          /* พื้นหลังสีเทาอมฟ้าอ่อนๆ */
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;        /* สีกรมท่าเกือบดำ */
+  --text-muted: #64748b;
+  --primary: #1e3a8a;          /* น้ำเงินเข้ม สไตล์พรีเมียร์ลีก */
+  --primary-glow: rgba(30, 58, 138, 0.2);
+  --accent-blue: #3b82f6;      /* สีฟ้าสว่าง สำหรับปุ่มกด */
+  --accent-green: #10b981;     /* เขียวชนะ/อันดับแชมเปี้ยนส์ลีก */
+  --accent-red: #ef4444;       /* แดงแพ้/Live สด */
+  --border-light: #e2e8f0;
+
+  /* 📐 เงา 3 มิติ */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+  --shadow-md: 0 8px 16px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 12px 24px rgba(30, 58, 138, 0.12);
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  font-family: 'Inter', 'Prompt', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 🌟 ลูกเล่นแอนิเมชันไฟกระพริบ (สำหรับคำว่า LIVE หรือ แมตช์วันนี้) */
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* 🌟 ปรับแต่ง Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+/* =========================================
+   🌟 แถบเมนูด้านบน (Navbar) สไตล์กระจกฝ้า
+   (อ้างอิงจากโครงสร้างใน app.html ของคุณ)
+========================================= */
+.nav-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.85); /* โปร่งแสง */
+  backdrop-filter: blur(12px); /* เอฟเฟกต์กระจกฝ้า */
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  
+  a, button {
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    background: transparent;
+    color: var(--text-muted);
+
+    &:hover {
+      color: var(--primary);
+      background: var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    /* เมื่อเมนูนั้นถูกเลือก */
+    &.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 6px 16px var(--primary-glow);
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {  Router } from '@angular/router';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { 
   EspnService, 
@@ -11,6 +12,7 @@ import {
   EspnScheduleResponse,
   EspnCompetitor
 } from '../../services/espn';
+import { PlayerCardComponent } from '../../component/player-card/player-card';
 
 // 🌟 สร้าง Interface เสริมสำหรับจัดการโครงสร้าง Roster ที่ถูกจัดกลุ่ม (เช่น Attackers, Defenders)
 export interface EspnRosterGroup {
@@ -20,14 +22,14 @@ export interface EspnRosterGroup {
 @Component({
   selector: 'app-team-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink,PlayerCardComponent],
   templateUrl: './team-detail.html',
   styleUrls: ['./team-detail.scss']
 })
 export class TeamDetailComponent implements OnInit {
   private espnService = inject(EspnService);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   // 🌟 แก้ไข: แทนที่ any ด้วย Interface ที่ถูกต้อง
   teamInfo = signal<EspnTeam | null>(null);
   players = signal<EspnAthlete[]>([]);
@@ -111,5 +113,10 @@ export class TeamDetailComponent implements OnInit {
     }
     
     return String(competitor.score);
+  }
+  viewPlayer(playerId: string) {
+    if (playerId) {
+      this.router.navigate(['/player', playerId]);
+    }
   }
 }

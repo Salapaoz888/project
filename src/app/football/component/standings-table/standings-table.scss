@@ -1,0 +1,54 @@
+:host { display: block; }
+
+/* 🏆 สไตล์แบบย่อ */
+.mini-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  th { text-align: left; color: #888; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+  td { padding: 10px 0; border-bottom: 1px solid #f9f9f9; transition: background 0.2s; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: #f0f4f8; }
+  
+  .team-cell {
+    display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;
+    img { width: 22px; height: 22px; object-fit: contain; }
+  }
+  .center { text-align: center; }
+  .rank-num { color: #888; font-weight: bold; }
+  .pts { font-weight: bold; color: #00529f; }
+}
+
+/* 📈 สไตล์แบบเต็ม */
+/* 📈 สไตล์แบบเต็ม */
+.standings-container {
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; overflow-x: auto;
+  }
+  .standings-table {
+    width: 100%; border-collapse: collapse; font-size: 14px; text-align: center;
+    th { padding: 12px; border-bottom: 2px solid #ddd; color: #555; }
+    td { padding: 12px; border-bottom: 1px solid #eee; transition: background 0.2s; }
+    
+    /* 🌟 เพิ่มลูกเล่นแถบสีตรงนี้เลยครับ */
+    tr {
+      border-left: 4px solid transparent; /* เตรียมพื้นที่ไว้ เผื่อทีมไหนไม่ได้ไปถ้วยไหน */
+      transition: background 0.2s;
+      
+      &:hover { background: #f0f4f8; }
+  
+      /* ผูกกับคลาสที่เราสร้างเงื่อนไขไว้ใน HTML */
+      &.zone-ucl { border-left-color: #00529f; } /* สีน้ำเงิน UCL */
+      &.zone-uel { border-left-color: #f39c12; } /* สีส้ม ยูโรป้า */
+      &.zone-relegation { border-left-color: #e74c3c; } /* สีแดง ตกชั้น */
+    }
+    
+    .left { text-align: left; }
+    .center { text-align: center; }
+    .team-name {
+      display: flex; align-items: center; gap: 10px; font-weight: bold;
+      img { width: 24px; height: 24px; object-fit: contain; }
+      .abbr { display: none; color: #888; font-weight: normal; }
+      @media (max-width: 600px) { .name { display: none; } .abbr { display: inline; } }
+    }
+    .pts { font-weight: bold; color: #00529f; font-size: 16px; }
+    @media (max-width: 768px) { .hide-mobile { display: none; } }
+  }

@@ -1,55 +1,21 @@
 <div class="standings-container">
   <h2>🏆 ตารางคะแนน</h2>
 
+  <app-league-selector 
+    [selectedLeagueId]="espnService.selectedLeague()" 
+    (leagueChange)="changeLeague($event)">
+  </app-league-selector>
+
   <div class="table-wrapper">
-    <table class="standings-table">
-      <thead>
-        <tr>
-          <th>อันดับ</th>
-          <th class="text-left">สโมสร</th>
-          <th title="แข่ง">แข่ง</th>
-          <th title="ชนะ">ชนะ</th>
-          <th title="เสมอ">เสมอ</th>
-          <th title="แพ้">แพ้</th>
-          <th title="ประตูได้">ได้</th>
-          <th title="ประตูเสีย">เสีย</th>
-          <th title="ลูกได้เสีย">ผลต่าง</th>
-          <th class="highlight-th">แต้ม</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (entry of standings(); track entry.team.id; let i = $index) {
-          <tr [style.border-left]="'4px solid ' + getZoneColor(i)">
-            
-            <td class="rank">{{ i + 1 }}</td>
-            
-            <td class="team-cell">
-              <div [routerLink]="['/team', entry.team.id]" class="team-link">
-                <img [src]="entry.team.logos?.[0]?.href || ''" alt="logo" class="team-logo">
-                <span class="team-name">{{ entry.team.name }}</span>
-              </div>
-            </td>
-            
-            <td>{{ getStat(entry.stats, 'GP') }}</td>
-            <td>{{ getStat(entry.stats, 'W') }}</td> 
-            <td>{{ getStat(entry.stats, 'D') }}</td> 
-            <td>{{ getStat(entry.stats, 'L') }}</td> 
-            <td>{{ getStat(entry.stats, 'F') }}</td> 
-            <td>{{ getStat(entry.stats, 'A') }}</td> 
-            <td>{{ getStat(entry.stats, 'GD') }}</td> 
-            
-            <td class="points">
-              {{ getStat(entry.stats, 'P') }}
-            </td>
-            
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="10" class="empty-state">กำลังโหลดตารางคะแนน...</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    @if (isLoading()) {
+      <div class="status-message">⏳ กำลังโหลดตารางคะแนน...</div>
+    } @else if (standings().length > 0) {
+      
+      <app-standings-table [standings]="standings()"></app-standings-table>
+      
+    } @else {
+      <div class="status-message empty">❌ ไม่พบข้อมูลตารางคะแนนสำหรับลีกนี้</div>
+    }
   </div>
 
   <div class="legend-container">
